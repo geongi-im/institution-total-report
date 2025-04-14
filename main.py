@@ -186,7 +186,7 @@ class InstitutionTotalReport:
 
         # 캡션 설정
         today_display = datetime.now().strftime('%Y-%m-%d')
-        caption = f"{today_display} 기관 순매수 상위 종목"
+        caption = f"{today_display} 기관 순매수 상위 TOP 10"
 
         # HTML 생성
         html_str = f'''
@@ -301,6 +301,7 @@ class InstitutionTotalReport:
         try:
             if not self.wkhtmltoimage_path:
                 error_message = "❌ 오류 발생\n\nWKHTMLTOIMAGE_PATH 환경변수가 설정되지 않았습니다."
+                telegram.send_test_message(error_message)
                 raise ValueError("WKHTMLTOIMAGE_PATH 환경변수가 필요합니다.")
                 
             config = imgkit.config(wkhtmltoimage=self.wkhtmltoimage_path)
@@ -311,6 +312,7 @@ class InstitutionTotalReport:
             
         except Exception as e:
             error_message = f"❌ 오류 발생\n\n함수: save_df_as_image\n파일: {file_name}\n오류: {str(e)}"
+            telegram.send_test_message(error_message)
             print(f"이미지 생성 중 오류 발생: {str(e)}")
             return None
         
