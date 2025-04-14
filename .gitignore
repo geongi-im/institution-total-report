@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# 민감한 정보 파일
+token.json
+
+# 생성된 이미지 파일
+img/
