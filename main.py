@@ -1,14 +1,21 @@
 import requests
 from dotenv import load_dotenv
 import os
+import sys
 import json
 from datetime import datetime
 import pandas as pd
 import imgkit
 from utils.api_util import ApiUtil, ApiError
 from utils.telegram_util import TelegramUtil
+import holidays
 
 load_dotenv()
+
+def isTodayHoliday():
+    kr_holidays = holidays.KR()
+    today = datetime.today().date()
+    return today in kr_holidays
 
 class InstitutionTotalReport:
     def __init__(self):
@@ -317,6 +324,11 @@ class InstitutionTotalReport:
             return None
         
 if __name__ == "__main__":
+    
+    if isTodayHoliday():
+        print('공휴일 종료')
+        sys.exit()
+
     telegram = TelegramUtil()
     api_util = ApiUtil()
     report = InstitutionTotalReport()
