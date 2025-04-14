@@ -1,5 +1,7 @@
 requests==2.31.0
 python-dotenv==1.0.0
-pandas==2.1.1
+pandas==2.0.3
+numpy==1.24.4
 imgkit==1.2.3
-Pillow==10.1.0 
+Pillow==10.1.0
+holidays==0.36 
