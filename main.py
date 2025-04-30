@@ -13,10 +13,6 @@ import holidays
 import pykrx.stock as stock
 
 load_dotenv()
-
-# 전체 종목 정보 가져오기  
-kospi_tickers = stock.get_market_ticker_list(market="KOSPI")
-kosdaq_tickers = stock.get_market_ticker_list(market="KOSDAQ")
   
 # 특정 종목코드가 어느 시장에 속하는지 확인
 def checkMarket(ticker):
@@ -720,6 +716,11 @@ if __name__ == "__main__":
     if isTodayHoliday():
         logger.info('오늘은 공휴일입니다. 프로그램을 종료합니다.')
         sys.exit()
+
+    # 전체 종목 정보 가져오기 
+    logger.info("전체 종목 정보 가져오기 시작")
+    kospi_tickers = stock.get_market_ticker_list(date=today, market="KOSPI")
+    kosdaq_tickers = stock.get_market_ticker_list(date=today, market="KOSDAQ")
 
     telegram = TelegramUtil()
     api_util = ApiUtil()
