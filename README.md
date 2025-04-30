@@ -63,6 +63,6 @@ python main.py
 
 - `/img`: 생성된 이미지 저장 디렉토리
 - `/utils`: 유틸리티 함수들 (API, 텔레그램, 로깅)
-- `/log`: 로그 파일 저장 디렉토리
+- `/logs`: 로그 파일 저장 디렉토리
 - `.env.sample`: 환경 변수 샘플 파일
 - `token.json.sample`: 토큰 정보 샘플 파일
