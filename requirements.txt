@@ -5,3 +5,4 @@ numpy==1.24.4
 imgkit==1.2.3
 Pillow==10.1.0
 holidays==0.36 
+pykrx==1.0.45
