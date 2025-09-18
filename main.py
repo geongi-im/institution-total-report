@@ -771,7 +771,8 @@ if __name__ == "__main__":
                 content=f"{today} 기관 순매수 상위 TOP 10 결과",
                 category="기관순매수",
                 writer="admin",
-                image_paths=[image_path]
+                image_paths=[image_path],
+                thumbnail_image_path=os.path.abspath("thumbnail/thumbnail.png")
             )
             logger.info("API 포스트 생성 완료")
         except ApiError as e:
