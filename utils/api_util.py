@@ -57,7 +57,7 @@ class ApiUtil:
             self.logger.error(f"이미지 압축 실패: {image_path} - {str(e)}")
             raise
 
-    def create_post(self, title: str, content: str, category: str, writer: str, image_paths: Optional[List[str]] = None, thumbnail_image_path: Optional[str] = None):
+    def create_post(self, title: str, content: str, category: str, writer: str, image_paths: Optional[List[str]] = None, thumbnail_image_path: str = None):
         """게시글 생성 API 호출"""
         url = f"{self.base_url}/board-research"
         
