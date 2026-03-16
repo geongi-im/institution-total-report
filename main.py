@@ -16,9 +16,16 @@ load_dotenv()
   
 # 특정 종목코드가 어느 시장에 속하는지 확인
 def checkMarket(ticker):
-    if ticker in kospi_tickers:
+    """
+    종목코드를 코스피/코스닥 리스트와 동일한 포맷(문자열 6자리)으로 정규화해서
+    어느 시장에 속하는지 판단한다.
+    """
+    # pykrx에서 가져온 티커는 문자열 6자리이므로, API 응답 값도 동일하게 맞춰준다.
+    code = str(ticker).strip().zfill(6)
+    
+    if code in kospi_tickers:
         return "KOSPI"
-    elif ticker in kosdaq_tickers:
+    elif code in kosdaq_tickers:
         return "KOSDAQ"
     else:
         return "Not Found"
