@@ -14,21 +14,32 @@ import pykrx.stock as stock
 
 load_dotenv()
   
+_cached_kospi_tickers: list[str] | None = None
+_cached_kosdaq_tickers: list[str] | None = None
+
+
 # 특정 종목코드가 어느 시장에 속하는지 확인
 def checkMarket(ticker):
     """
-    종목코드를 코스피/코스닥 리스트와 동일한 포맷(문자열 6자리)으로 정규화해서
-    어느 시장에 속하는지 판단한다.
+    종목코드를 코스피/코스닥 티커 리스트와 비교해 어떤 시장 소속인지 판별한다.
+    pykrx에서 직접 티커 리스트를 가져오되, 한 번 가져온 값은 모듈 수준 캐시에 저장해 재사용한다.
     """
+    global _cached_kospi_tickers, _cached_kosdaq_tickers
+
     # pykrx에서 가져온 티커는 문자열 6자리이므로, API 응답 값도 동일하게 맞춰준다.
     code = str(ticker).strip().zfill(6)
-    
-    if code in kospi_tickers:
+
+    # 최초 한 번만 pykrx에서 전체 티커를 조회해서 캐시에 저장
+    if _cached_kospi_tickers is None:
+        _cached_kospi_tickers = stock.get_market_ticker_list(market="KOSPI")
+    if _cached_kosdaq_tickers is None:
+        _cached_kosdaq_tickers = stock.get_market_ticker_list(market="KOSDAQ")
+
+    if code in _cached_kospi_tickers:
         return "KOSPI"
-    elif code in kosdaq_tickers:
+    if code in _cached_kosdaq_tickers:
         return "KOSDAQ"
-    else:
-        return "Not Found"
+    return "Not Found"
 
 def isTodayHoliday():
     kr_holidays = holidays.KR()
