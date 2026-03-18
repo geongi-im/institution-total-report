@@ -178,3 +178,6 @@ token.json
 
 # 생성된 이미지 파일
 img/
+
+# Claude Code
+.claude/

@@ -5,5 +5,5 @@ numpy==2.2.4
 imgkit==1.2.3
 Pillow==10.1.0
 holidays==0.36
-pykrx==1.0.48
+finance-datareader==0.9.110
 setuptools==80.0.1

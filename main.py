@@ -10,7 +10,7 @@ from utils.api_util import ApiUtil, ApiError
 from utils.telegram_util import TelegramUtil
 from utils.logger_util import LoggerUtil
 import holidays
-import pykrx.stock as stock
+import FinanceDataReader as fdr
 
 load_dotenv()
   
@@ -22,18 +22,18 @@ _cached_kosdaq_tickers: list[str] | None = None
 def checkMarket(ticker):
     """
     종목코드를 코스피/코스닥 티커 리스트와 비교해 어떤 시장 소속인지 판별한다.
-    pykrx에서 직접 티커 리스트를 가져오되, 한 번 가져온 값은 모듈 수준 캐시에 저장해 재사용한다.
+    FinanceDataReader에서 직접 티커 리스트를 가져오되, 한 번 가져온 값은 모듈 수준 캐시에 저장해 재사용한다.
     """
     global _cached_kospi_tickers, _cached_kosdaq_tickers
 
-    # pykrx에서 가져온 티커는 문자열 6자리이므로, API 응답 값도 동일하게 맞춰준다.
+    # FinanceDataReader에서 가져온 티커는 문자열 6자리이므로, API 응답 값도 동일하게 맞춰준다.
     code = str(ticker).strip().zfill(6)
 
-    # 최초 한 번만 pykrx에서 전체 티커를 조회해서 캐시에 저장
+    # 최초 한 번만 FinanceDataReader에서 전체 티커를 조회해서 캐시에 저장
     if _cached_kospi_tickers is None:
-        _cached_kospi_tickers = stock.get_market_ticker_list(market="KOSPI")
+        _cached_kospi_tickers = fdr.StockListing('KOSPI')['Code'].tolist()
     if _cached_kosdaq_tickers is None:
-        _cached_kosdaq_tickers = stock.get_market_ticker_list(market="KOSDAQ")
+        _cached_kosdaq_tickers = fdr.StockListing('KOSDAQ')['Code'].tolist()
 
     if code in _cached_kospi_tickers:
         return "KOSPI"
@@ -735,10 +735,10 @@ if __name__ == "__main__":
         logger.info('오늘은 공휴일입니다. 프로그램을 종료합니다.')
         sys.exit()
 
-    # 전체 종목 정보 가져오기 
+    # 전체 종목 정보 가져오기 (checkMarket 캐시에 미리 저장)
     logger.info("전체 종목 정보 가져오기 시작")
-    kospi_tickers = stock.get_market_ticker_list(date=today, market="KOSPI")
-    kosdaq_tickers = stock.get_market_ticker_list(date=today, market="KOSDAQ")
+    _cached_kospi_tickers = fdr.StockListing('KOSPI')['Code'].tolist()
+    _cached_kosdaq_tickers = fdr.StockListing('KOSDAQ')['Code'].tolist()
 
     telegram = TelegramUtil()
     api_util = ApiUtil()
